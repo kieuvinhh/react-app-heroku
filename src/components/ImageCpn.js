@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function ImageCpn() {
   const [result, setResult] = useState("kết quả");
+  const [Url, setUrl] = useState("");
   const [resultStyle, setResultStyle] = useState("alert alert-primary")
   const [image, setImage] = useState(null);
 
@@ -25,19 +26,21 @@ export default function ImageCpn() {
   
   function onImageLoaded(e){
     var base64 = getBase64Image(e.target);
-    const url = 'http://98a1a82744c0.ngrok.io/image' // post to this url
+    //const url = 'http://98a1a82744c0.ngrok.io/image' // post to this url
+    console.log(Url);
     var bodyFormData = new FormData();
     bodyFormData.append('img', base64);
   
 axios({
       method: "post",
-      url: url,
+      url: Url,
       data: bodyFormData
     })
       .then(function (response) {
-        const res_age = response['data'].age; 
+        const res_age = response['data'].age;
+        const res_cl = response['data'].cl_age; 
         // console.log(res_age);
-        const resultss = 'Độ tuổi của người trong ảnh là: ' + res_age;
+        const resultss = 'Độ tuổi: ' + res_age + ' Nhóm: ' + res_cl;
         setResult(resultss);
         setResultStyle("alert alert-primary") // Chuyen khung result sang mau xanh
       })
@@ -52,6 +55,8 @@ axios({
  
   return (
     <div className='App_image'>
+    <input id='input-url' type="text" name="name" autoComplete='off'/>
+    <button onClick={ () => {setUrl(document.getElementById('input-url').value)}}>update Url</button>
       <MagicDropZone
         accept="image/jpeg, image/png, .jpg, .jpeg, .png"
         onDrop={onDrop} 
