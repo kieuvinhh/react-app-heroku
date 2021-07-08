@@ -4,9 +4,9 @@ import MagicDropZone from "react-magic-dropzone";
 import axios from "axios";
 
 export default function ImageCpn() {
-  const [result, setResult] = useState("kết quả");
-  const [Url, setUrl] = useState("");
-  const [resultStyle, setResultStyle] = useState("alert alert-primary")
+  const [result, setResult] = useState("kết quả"); //recive and display result
+  const [Url, setUrl] = useState(""); //set url after access to home page
+  const [resultStyle, setResultStyle] = useState("alert alert-primary") // define two color of result, blue: success, red : fail
   const [image, setImage] = useState(null);
 
   function onDrop(accepted, rejected, links) {
