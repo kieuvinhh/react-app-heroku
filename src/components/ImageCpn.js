@@ -4,9 +4,9 @@ import MagicDropZone from "react-magic-dropzone";
 import axios from "axios";
 
 export default function ImageCpn() {
-  const [result, setResult] = useState("kết quả"); //recive and display result
-  const [Url, setUrl] = useState(""); //set url after access to home page
-  const [resultStyle, setResultStyle] = useState("alert alert-primary") // define two color of result, blue: success, red : fail
+  const [result, setResult] = useState("kết quả");
+  const [Url, setUrl] = useState("");
+  const [resultStyle, setResultStyle] = useState("alert alert-primary")
   const [image, setImage] = useState(null);
 
   function onDrop(accepted, rejected, links) {
@@ -15,19 +15,19 @@ export default function ImageCpn() {
   function getBase64Image(img) {
     // https://stackoverflow.com/questions/22172604/convert-image-url-to-base64
     var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    console.log("Kich thuoc canvas", canvas.width, canvas.height);
     var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     var dataURL = canvas.toDataURL("image/png");
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   
   
   function onImageLoaded(e){
-    var base64 = getBase64Image(e.target);
-    //const url = 'http://98a1a82744c0.ngrok.io/image' // post to this url
-    console.log(Url);
+    const img = e.target;
+    var base64 = getBase64Image(img);
     var bodyFormData = new FormData();
     bodyFormData.append('img', base64);
   
@@ -47,7 +47,7 @@ axios({
       .catch(function (error){
         console.log(error);
         console.log("Cannot detect face")
-        setResult("Sorry! We can't find any face in this image")
+        setResult("Sorry! Can not find any face in this image")
         setResultStyle("alert alert-danger") // Chuyen khung result sang mau do
       })
   }
@@ -72,7 +72,6 @@ axios({
       </MagicDropZone>
 
       <div className={resultStyle} > {result}</div>
-     
     </div>
   );
 }
